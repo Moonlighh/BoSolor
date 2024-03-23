@@ -1,0 +1,42 @@
+﻿@using BODEGA_SOLORZANO.Models.BoSolor;
+@model List<MenuModel>;
+
+@{
+    string menucollapse = "collapseLayouts";
+    int correlativo = 1;
+}
+
+<!-- Navbar Menu Opciones-->
+<div class="sb-sidenav-menu">
+    <div class="nav">
+
+        @foreach (var menu in Model)
+        {
+            @if (menu?.ListaMenu.Count() == 0)
+            {
+                <a class="nav-link" href="@Url.Action(menu.PaginaAccion, menu.Controlador)">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    @menu.Nombre
+                </a>
+            }
+            else
+            {
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="@($"#{menucollapse}{correlativo}")" aria-expanded="false" aria-controls="collapseLayouts">
+                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                    @menu.Nombre
+                </a>
+                <div class="collapse" id="@($"{menucollapse}{correlativo}")" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        @foreach (var submenu in menu.ListaMenu)
+                        {
+                            <a class="nav-link" href="@Url.Action(submenu.PaginaAccion, submenu.Controlador)">@submenu.Nombre</a>
+
+
+                        }
+                    </nav>
+                </div>
+                correlativo = correlativo + 1;
+            }
+        }
+    </div>
+</div>

@@ -1,0 +1,116 @@
+﻿@model IEnumerable<BODEGA_SOLORZANO.Models.BoSolor.CarritoModel>
+
+@{
+    ViewData["Title"] = "CarritoCompra";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+
+<p>
+    <a asp-action="Productos" class="btn btn-success btn-sm">Agregar productos</a>
+</p>
+
+<h1>Carrito de compra</h1>
+<div>
+    <h2>Resumen:</h2>
+    <p>
+        Cantidad de productos: @Model.Count()<br />
+        Total: S/.@Model.Sum(x => x.Subtotal) soles<br />
+    </p>
+</div>
+<hr />
+@if (Model.Count() == 0)
+{
+    <div class="alert alert-warning" role="alert">
+        No hay productos en el carrito de compra
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["Error"]
+    </div>
+}
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Mensaje"]
+    </div>
+}
+<hr />
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="bg-dark text-light">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.IdCarrito)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IdProducto)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Producto)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CantidadPaquetes)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PrecioPaquete)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Subtotal)
+                </th>
+                <th>ELIMINAR</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdCarrito)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdProducto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Producto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CantidadPaquetes) paquetes
+                    </td>
+                    <td>
+                        S/.@Html.DisplayFor(modelItem => item.PrecioPaquete)
+                    </td>
+                    <td>
+                        S/.@Html.DisplayFor(modelItem => item.Subtotal)
+                    </td>
+                    <td>
+                        <a asp-action="EliminarProductoCompra" asp-controller="Compra" class="btn btn-danger btn-sm m-1" asp-route-id="@item.IdCarrito"><i class="bi bi-trash-fill"></i> Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#Modcomprar">Realizar compra <i class="bi bi-dropbox"></i></button>
+
+<!--Agregar compra-->
+<div class="modal" tabindex="-1" id="Modcomprar" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form asp-controller="Compra" asp-action="IniciarTransaccion" method="POST">
+                <div class="modal-header ">
+                    <h4 class="modal-title">¿Desea Confirmar la compra?</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-warning">Aceptar</button>
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

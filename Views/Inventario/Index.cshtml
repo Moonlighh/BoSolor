@@ -1,0 +1,120 @@
+﻿@model IEnumerable<BODEGA_SOLORZANO.Models.BoSolor.InventarioModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+
+<h1>INVENTARIO</h1>
+<div class="alert alert-secondary" role="alert">
+    <strong style="color:black">*Cantidad de productos: @Model.Count() * </strong>
+    <strong style="color:orange">*Productos por agotarse: @Model.Count(x => x.CantidadEnCajas <= 20) * </strong>
+    <strong style="color:purple">*Productos agotandose: @Model.Count(x => x.CantidadEnCajas <= 10) * </strong>
+    <strong style="color:red">*Productos agotados: @Model.Count(x => x.CantidadEnCajas == 0) * </strong>
+    <strong style="color:green">*Productos disponibles: @Model.Count(x => x.CantidadEnCajas > 1)</strong>
+</div>
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Mensaje"]
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["Error"]
+    </div>
+}
+<hr />
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="bg-dark text-light">
+            <tr>
+                <th>
+                    ID
+                </th>
+                <th>
+                    CODIGO
+                </th>
+                <th>
+                    PRODUCTO
+                </th>
+                <th>
+                    DETALLE
+                </th>
+                <th>
+                    PRECIO PAQUETE
+                </th>
+                <th>
+                    PACK DISPONIBLE
+                </th>
+                <th>
+                    PRE.UNITARIO
+                </th>
+                <th>
+                    UNIDADES DISPONIBLES
+                </th>
+                <th>
+                    UNIDADES POR PAQUETE
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.IdInventario
+                    </td>
+                    <td>
+                        @item.IdProductoNavegacion.Codigo
+                    </td>
+                    <td>
+                        @item.IdProductoNavegacion.Nombre
+                    </td>
+                    <td>
+                        @item.IdProductoNavegacion.Descripcion
+                    </td>
+                    <td>
+                        S/. @item.IdProductoNavegacion.PrecioPorConjunto soles
+                    </td>
+                    @if (item.CantidadEnCajas <= 10)
+                    {
+                        <td>
+                            <button type="button" class="btn btn-outline-danger">@item.CantidadEnCajas</button>
+                        </td>
+                    }
+                    else
+                    {
+                        if (item.CantidadEnCajas <= 20)
+                        {
+                            <td>
+                                <button type="button" class="btn btn-outline-warning">@item.CantidadEnCajas</button>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <button type="button" class="btn btn-outline-success">@item.CantidadEnCajas</button>
+                            </td>
+                        }
+                    }
+                    <td>
+                        S/. @item.IdProductoNavegacion.PrecioPorUnidad soles
+                    </td>
+                    <td>
+                        @item.CantidadEnUnidades unidades
+                    </td>
+                    <td>
+                        @item.IdProductoNavegacion.UnidadesPorConjunto unidades
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section ScriptsMain {
+
+}

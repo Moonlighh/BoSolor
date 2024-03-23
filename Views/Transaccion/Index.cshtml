@@ -1,0 +1,85 @@
+﻿@model List<BODEGA_SOLORZANO.Models.BoSolor.TransaccionModel>
+
+@{
+    ViewData["Title"] = "Listar";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+
+<h1>TRANSACCIONES REALIZADAS</h1>
+<div class="alert alert-info" role="alert">
+    <strong>INFORMACIÓN!</strong> Las transacciones son del día.<br /><br />
+    <strong>Cantidad de transacciones: </strong>@Model.Count()<br />
+    <strong>Monto acumulado: S/.</strong> @Model.Sum(x => x.MontoTotal) soles
+</div>
+<hr />
+
+<p>
+    <a asp-action="ListarCompras" class="btn btn-success btn-sm">Ver solo compras</a>
+    <a asp-action="ListarVentas" class="btn btn-success btn-sm">Ver solo ventas</a>
+    <a asp-action="ListarPedidos" class="btn btn-success btn-sm">Ver solo pedidos</a>
+    <a asp-action="Index" asp-controller="inventario" class="btn btn-success btn-sm">Inventario</a>
+</p>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="bg-dark text-light">
+            <tr>
+                <th>#</th>
+                <th>TIPO</th>
+                <th>NOTA</th>
+                <th>CODIGO</th>
+                <th>MÉTODO</th>
+                <th>MONTO BRUTO</th>
+                <th>DESCUENTO</th>
+                <th>MONTO TOTAL</th>
+                <th>REGISTRO</th>
+                <th>ESTADO</th>
+                <th>TRABAJADOR</th>             
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.IdTransaccion</td>
+                    <td>@item.TipoTransaccion</td>
+                    <td>@item.Nota</td>
+                    <td>@item.CodTransaccion</td>
+                    <td>@item.IdMetodoNavegacion.Nombre</td>
+                    <td>@item.MontoBruto</td>
+                    <td>@item.Descuento</td>
+                    <td>@item.MontoTotal</td>
+                    <td>@item.FechaTransaccion</td>
+                    @if (item.EstadoTransaccion == "EN ESPERA")
+                    {
+                        <td style="color:blue">@item.EstadoTransaccion</td>
+                    }
+                    else
+                    {
+                        @if (item.EstadoTransaccion == "PAGADO")
+                        {
+                            <td style="color:green">@item.EstadoTransaccion</td>
+                        }
+                        else
+                        {
+                            if (item.EstadoTransaccion == "CANCELADO")
+                            {
+                                <td style="color:orange">@item.EstadoTransaccion</td>
+                            }
+                            else
+                            {
+                                <td style="color:red">@item.EstadoTransaccion</td>
+                            }
+                        }
+                    }
+                    <td>@item.IdCuentaNavegacion.Nombres</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section ScriptsMain {
+
+}
+

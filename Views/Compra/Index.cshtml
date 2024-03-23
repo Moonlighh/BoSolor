@@ -1,0 +1,48 @@
+﻿@model IEnumerable<BODEGA_SOLORZANO.Models.BoSolor.TransaccionModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+
+<h1>COMPRAS REALIZADAS</h1>
+<h3>Egresos: S/. @Model.Sum(e => e.MontoTotal)</h3>
+<hr />
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="bg-dark text-light">
+            <tr>
+                <th>CODIGO</th>
+                <th>METODO</th>
+                <th>MONTO BRUTO</th>
+                <th>DESCUENTO</th>
+                <th>MONTO TOTAL</th>
+                <th>FECHA</th>
+                <th>ESTADO</th>
+                <th>USUARIO</th>
+                <th>PROVEEDOR</th>
+                <th>VER DETALLE</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.CodTransaccion</td>
+                    <td>@item.IdMetodoNavegacion.Nombre</td>
+                    <td>S/. @item.MontoBruto</td>
+                    <td>@item.Descuento %</td>
+                    <td>S/. @item.MontoTotal</td>
+                    <td>@item.FechaTransaccion</td>
+                    <td>@item.EstadoTransaccion</td>
+                    <td>@item.IdCuentaNavegacion.Nombres</td>
+                    <td>@item.IdProveedorNavegacion.RazonSocial</td>
+                    <td>
+                        <a asp-action="Detalle" asp-route-id="@item.IdTransaccion" class="btn btn-info btn-sm m-1">Ver Detalle</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

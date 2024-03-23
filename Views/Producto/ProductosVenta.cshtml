@@ -1,0 +1,120 @@
+﻿@model List<BODEGA_SOLORZANO.Models.BoSolor.InventarioModel>
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+
+@section StylesMain {
+    <link href="~/ShowItem/css/styles.css" rel="stylesheet" />
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Buscar productos" aria-label="Buscar productos" aria-describedby="button-addon2">
+                <button class="btn btn-outline-dark m-2 p-2" type="button" id="button-addon2">Buscar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Related items section-->
+<section class="bg-light">
+    <h2 class="fw-bolder">Productos para la venta</h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="bg-dark text-light">
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        CODIGO
+                    </th>
+                    <th>
+                        NOMBRE
+                    </th>
+                    <th>
+                        DESCRIPCION
+                    </th>
+                    <th>
+                        PRE.UNI
+                    </th>
+                    <th>
+                        PRE.CON
+                    </th>
+                    <th>
+                        UNI.
+                    </th>
+                    <th>
+                        CANT.CAJAS
+                    </th>
+                    <th>
+                        CANT.UNIDADES
+                    </th>
+                    <th>ELIMINAR</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdProductoNavegacion.IdProducto)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdProductoNavegacion.Codigo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdProductoNavegacion.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdProductoNavegacion.Descripcion)
+                        </td>
+                        <td>
+                            S/.@Html.DisplayFor(modelItem => item.IdProductoNavegacion.PrecioPorUnidad)
+                        </td>
+                        <td>
+                            S/.@Html.DisplayFor(modelItem => item.IdProductoNavegacion.PrecioPorConjunto)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdProductoNavegacion.UnidadesPorConjunto)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CantidadEnCajas)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CantidadEnUnidades)
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modDetalleVenta">Agregar<i class="bi bi-dropbox"></i></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!--Agregar compra-->
+<div class="modal" tabindex="-1" id="modDetalleVenta" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form asp-controller="Compra" asp-action="IniciarTransaccion" method="POST">
+                <div class="modal-header ">
+                    <h4 class="modal-title">¿Desea Confirmar la compra?</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-footer">
+                    Copilot creame los input:
+                    <input type="hidden" name="IdProducto" value="" />
+                    <input type="text" name="Cantidad" value="" />
+
+                    <button type="submit" class="btn btn-warning">Aceptar</button>
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,157 @@
+﻿@model IEnumerable<BODEGA_SOLORZANO.Models.BoSolor.PedidoModel>
+
+@{
+    ViewData["Title"] = "Listar";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+    int cantidad = 0;
+    var estadoClases = new Dictionary<string, string>
+    {
+        // Tipos transaccion y pedido
+        { "EN ESPERA", "bg-warning" },//T
+        { "PAGADO", "bg-success" },//T - P
+        { "CANCELADO", "bg-danger" },//T - P
+        { "ERROR", "bg-danger" },//T
+        { "PENDIENTE", "bg-warning" },//P
+        { "EN PROCESO", "bg-primary" },//P
+        { "ENTREGADO", "bg-info" },//P
+    };
+}
+
+@section StylesMain {
+
+}
+
+<h1>PEDIDOS REALIZADOS</h1>
+<div class="text-bg-dark p-3">
+    <strong>INFORMACIÓN!</strong> Los pedidos son de la semana<br />
+    <strong>PEDIDOS: @Model.Count() </strong><br />
+    <strong>TOTAL ESPERADO: S/. @Model.Sum(x => x.IdTransaccionNavegacion.MontoTotal) soles</strong><br /><br />
+    <span class="badge bg-warning">PENDIENTES: @Model.Count(x => x.IdEstadoPedidoNavegacion.NombreEstado.ToUpper()=="PENDIENTE")</span>
+    <span class="badge bg-primary">EN PROCESO: @Model.Count(x => x.IdEstadoPedidoNavegacion.NombreEstado.ToUpper() == "EN PROCESO")</span>
+    <span class="badge bg-info">ENTREGADOS: @Model.Count(x => x.IdEstadoPedidoNavegacion.NombreEstado.ToUpper() == "ENTREGADO")</span>
+    <span class="badge bg-success">PAGADOS: @Model.Count(x => x.IdEstadoPedidoNavegacion.NombreEstado.ToUpper() == "PAGADO")</span>
+    <span class="badge bg-danger">CANCELADOS: @Model.Count(x => x.IdEstadoPedidoNavegacion.NombreEstado.ToUpper() == "CANCELADO")</span>
+</div>
+<hr />
+
+<p>
+    <a asp-action="ProductosDisponibles" class="btn btn-success btn-sm">Nuevo pedido <i class="bi bi-bag-plus-fill"></i></a>
+</p>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Mensaje"]
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["Error"]
+    </div>
+}
+<hr />
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="bg-dark text-light">
+            <tr>
+                <td>#</td>
+                <th>CLIENTE</th>
+                <th>REPARTIDOR</th>
+                <th>PEDIDO</th>
+                <th>ESTADO</th>
+                <th>TRANSACCION</th>
+                <th>ESTADO</th>
+                <th>MONTO TOTAL</th>
+                <th>CONFIRMAR PAGO</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                cantidad++;
+                DateTime fchRecepcion = item.FechaRecepcion;
+                DateTime fchEntrega = item.FechaEntrega;
+
+                <tr>
+                    <td>@cantidad</td>
+                    <td>@item.IdClienteNavegacion.Cliente</td>
+                    <td>
+                        @if (item.IdRepartidorNavegacion.Nombres == string.Empty)
+                        {
+                            <span class="badge bg-danger">SIN ASIGNAR</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">@item.IdRepartidorNavegacion.Nombres.ToUpper()</span>
+                        }
+                    </td>
+                    <td>
+                        <a tabindex="0" class="btn btn-dark btn-sm" role="button" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-title="Detalle pedido"
+                           data-bs-content="@("Hora de registro: " + item.FechaRegistro.ToString("hh:mm:ss")) <br> Hora de recepción: @(item.FechaRecepcion != DateTime.MinValue ? item.FechaRecepcion.ToString("hh:mm:ss") : "No registrada") <br>
+                                               Hora de entrega: @(item.FechaEntrega != DateTime.MinValue ? item.FechaEntrega.ToString("hh:mm:ss") : "No registrada")<br>
+                                            Detalle: @item.Detalle">
+                            Ver detalle
+                        </a>
+                    </td>
+
+                    @{
+                        // Obtener la clase CSS basada en el estado del pedido
+                        var estadoPedido = item.IdEstadoPedidoNavegacion.NombreEstado.ToUpper();
+                        var claseCss = estadoClases.ContainsKey(estadoPedido) ? estadoClases[estadoPedido] : "bg-secondary";
+                    }
+                    <td>
+                        <span class="badge @claseCss">@item.IdEstadoPedidoNavegacion.NombreEstado</span>
+                    </td>
+                    <td>
+                        <a tabindex="0" class="btn btn-dark btn-sm" role="button" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-title="Detalle de transacción"
+                           data-bs-content="Monto Bruto: S/.@item.IdTransaccionNavegacion.MontoBruto <br> Descuento: S/.@item.IdTransaccionNavegacion.Descuento <br> Monto Total: S/.@item.IdTransaccionNavegacion.MontoTotal <br> Detalle: @item.IdTransaccionNavegacion.Nota">
+                            Ver detalle
+                        </a>
+                    </td>
+                    @{
+                        // Obtener la clase CSS basada en el estado de la transacción
+                        var estadoTransaccion = item.IdTransaccionNavegacion.EstadoTransaccion.ToUpper();
+                        claseCss = estadoClases.ContainsKey(estadoTransaccion) ? estadoClases[estadoTransaccion] : "bg-secondary";
+                    }
+                    <td>
+                        <span class="badge @claseCss">@item.IdTransaccionNavegacion.EstadoTransaccion</span>
+                    </td>
+                    <td>S/.@item.IdTransaccionNavegacion.MontoTotal</td>
+                    <td>
+                        @if (item.IdEstadoPedidoNavegacion.NombreEstado.ToUpper() == "ENTREGADO")
+                        {
+                            <form asp-action="ConfirmarPago" method="post" class="mt-2">
+                                <input type="hidden" name="cod" value="@item.IdTransaccionNavegacion.CodTransaccion" />
+                                <input type="hidden" name="id" value="@item.IdPedido" />
+                                <button type="submit" class="btn btn-success btn-sm" onclick="return confirmarEntrega();">Confirmar entrega <i class="bi bi-check-circle-fill"></i></button>
+                            </form>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">No disponible</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('[data-bs-toggle="popover"]').popover({
+            html: true // Habililtar contenido HTML dentro de un popover
+        });
+    });
+
+    function confirmarEntrega() {
+        return confirm('Solo debes confirmar el pago si recibiste el dinero. ¿Quieres confirmar el pago?');
+    }
+</script>
+
+
+@section ScriptsMain {
+
+}

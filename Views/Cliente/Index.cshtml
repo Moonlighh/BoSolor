@@ -1,0 +1,67 @@
+﻿@model IEnumerable<BODEGA_SOLORZANO.Models.BoSolor.ClienteModel>
+
+@{
+    ViewData["Title"] = "Listar";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+
+@section StylesMain {
+
+}
+
+<h1>LISTADO DE CLIENTES</h1>
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Mensaje"]
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["Error"]
+    </div>
+}
+<hr />
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="bg-dark text-light">
+            <tr>
+                <th>ID</th>
+                <th>CLIENTE</th>
+                <th>DNI-RUC</th>
+                <th>REGISTRO</th>
+                <th>TRANSACCIONES</th>
+                <th>OPCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.IdCliente</td>
+                    <td>@item.Cliente</td>
+                    <td>@item.NumDocumento</td>
+                    <td>@item.FechaRegistro.ToString("dddd/MMMM/yyyy")</td>
+                    @if (@item.CantidadTransacciones > 0)
+                    {
+                        <td>Realizó @item.CantidadTransacciones transacciones</td>
+                    }
+                    else
+                    {
+                        <td>
+                            <span class="badge bg-danger">No tiene ninguna transaccion</span>
+
+                        </td>
+                    }
+                    <td>
+                        <a asp-action="Editar" asp-controller="Cliente" class="btn btn-primary btn-sm" asp-route-id="@item.IdCliente">Editar</a>
+                        <a asp-action="Eliminar" asp-controller="Cliente" class="btn btn-danger btn-sm" asp-route-id="@item.IdCliente"><i class="bi bi-trash-fill"></i> Eliminar</a>
+                        <a asp-action="Detalle" asp-controller="Cliente" class="btn btn-info btn-sm" asp-route-id="@item.IdCliente">Detalle</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

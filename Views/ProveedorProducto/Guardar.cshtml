@@ -1,0 +1,59 @@
+﻿@model BODEGA_SOLORZANO.Models.BoSolor.ProveedorProductoModel
+@{
+    ViewData["Title"] = "Guardar";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+
+@section StylesMain {
+
+}
+
+<h1>REGISTRAR PRECIO DE COMPRA ENTRE PROVEEDOR Y PRODUCTO</h1>
+<h4>Proveedor y Producto</h4>
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Mensaje"]
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["Error"]
+    </div>
+}
+<hr />
+
+<div class="d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+    <div class="card" style="max-width: 30rem;">
+        <div class="card-body">
+            <h5 class="card-title">Registrar Proveedor-Producto</h5>
+            <form asp-action="Guardar" asp-controller="ProveedorProducto" method="post">
+                <div class="form-group">
+                    <span class="input-group-text">Proveedor</span>
+                    <select asp-for="IdProveedorNavegacion.IdProveedor" name="proveedor" asp-items="@(new SelectList(ViewBag.Proveedores, "IdProveedor", "RazonSocial"))" class="form-select">
+                        <option value="">Selecciona un proveedor</option>
+                    </select>
+                    <span asp-validation-for="IdProveedorNavegacion.IdProveedor" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <span class="input-group-text">Producto</span>
+                    <select asp-for="IdProductoNavegacion.IdProducto" name="producto" asp-items="@(new SelectList(ViewBag.Productos, "IdProducto", "Nombre"))" class="form-select">
+                        <option value="">Selecciona un producto</option>
+                    </select>
+                    <span asp-validation-for="IdProductoNavegacion.IdProducto" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <span class="input-group-text">Precio de Compra</span>
+                    <input asp-for="PrecioCompra" type="number" step="0.01" class="form-control" placeholder="Ingresa precio de compra" aria-label="Precio de Compra">
+                    <span asp-validation-for="PrecioCompra" class="text-danger"></span>
+                </div>
+                <br />
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <input type="submit" value="Guardar" class="btn btn-primary" />
+                    <a asp-action="Index" asp-controller="Cuenta" class="btn btn-dark">Visualizar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+﻿@model IEnumerable<BODEGA_SOLORZANO.Models.BoSolor.DetalleTransaccionModel>
+
+@{
+    ViewData["Title"] = "Detalle";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+
+<h1>Detalle de la transacción</h1>
+<hr />
+
+<p>
+    <a asp-action="Index" class="btn btn-success">Volver</a>
+</p>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="bg-dark text-light">
+            <tr>
+                <th>
+                    CATEGORIA
+                </th>
+                <th>
+                    PRODUCTO
+                </th>
+                <th>
+                    CANTIDAD DE PAQUETES
+                </th>
+                <th>
+                    S/. SUBTOTAL
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdProductoNavegacion.IdCategoriaNavegacion.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdProductoNavegacion.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CantidadPorConjunto)
+                    </td>
+                    <td>
+                        S/. @Html.DisplayFor(modelItem => item.SubTotal) soles
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,86 @@
+﻿@model IEnumerable<BODEGA_SOLORZANO.Models.BoSolor.PedidoModel>
+
+@{
+    ViewData["Title"] = "Pendientes";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+
+
+<!-- Header-->
+<header class="bg-dark py-1">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Pedidos pendientes</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Selecciona el pedido que vas atender</p>
+        </div>
+    </div>
+</header>
+<!-- Section-->
+<section class="py-5">
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["Mensaje"]
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["Error"]
+        </div>
+    }
+    <hr />
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            @foreach (var item in Model)
+            {
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <!-- Fecha de registro del pedido-->
+                        <div class="badge bg-info text-white position-absolute" style="top: 0.5rem; right: 0.5rem">@item.FechaRegistro</div>
+                        <!-- Detalle pedido-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Cliente-->
+                                <h5 class="fw-bolder">@item.IdClienteNavegacion.Cliente</h5>
+                                <!-- Product reviews-->
+                                <div class="d-flex justify-content-center small text-warning mb-2">
+                                    <div class="bi-star-fill"></div>
+                                    <div class="bi-star-fill"></div>
+                                    <div class="bi-star-fill"></div>
+                                    <div class="bi-star-fill"></div>
+                                    <div class="bi-star-fill"></div>
+                                </div>
+                                <!-- Datos -->
+                                <div class="d-flex justify-content-center small text-success mb-2">
+                                    <p>
+                                        Dirección: @item.DireccionEntrega<br>
+                                        Referencia: @item.Referencia<br>
+                                        Detalle: @item.Detalle<br>
+                                    </p>
+                                </div>
+                                <!-- Product price-->
+                                <span class="text-muted text-decoration-line-through">S/. @item.IdTransaccionNavegacion.MontoBruto</span>
+                                S/. @item.IdTransaccionNavegacion.MontoTotal<br>
+                                <span class="badge bg-warning">
+                                    TRANSACCION: @item.IdTransaccionNavegacion.EstadoTransaccion
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center">
+                                <form asp-action="TomarPedido" method="post">
+                                    <input type="hidden" name="id" value="@item.IdPedido" />
+                                    <button type="submit" class="btn btn-outline-dark mt-auto">Tomar pedido</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+

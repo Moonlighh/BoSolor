@@ -1,0 +1,46 @@
+﻿@model BODEGA_SOLORZANO.Models.BoSolor.CategoriaModel
+
+@{
+    ViewData["Title"] = "Guardar";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+
+<h1>REGISTRAR NUEVA CATEGORIA</h1>
+<h4>Categoria</h4>
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Mensaje"]
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["Error"]
+    </div>
+}
+<hr />
+<div class="card-frm">
+    <div class="card-header-frm">
+        <div class="text-header">Registrar</div>
+    </div>
+    <div class="card-body">
+        <form asp-action="Guardar">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descripcion" class="control-label"></label>
+                <input asp-for="Descripcion" class="form-control" />
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+                <a asp-action="Index" asp-controller="Categoria" class="btn btn-dark">Visualizar</a>
+            </div>
+        </form>
+    </div>
+</div>

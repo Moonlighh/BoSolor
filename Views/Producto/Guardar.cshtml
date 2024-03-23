@@ -1,0 +1,77 @@
+﻿@model BODEGA_SOLORZANO.Models.BoSolor.ProductoModel
+@{
+    ViewData["Title"] = "Guardar";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+
+<h1>REGISTRAR NUEVO PRODUCTO</h1>
+<h4>Producto</h4>
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Mensaje"]
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["Error"]
+    </div>
+}
+<hr />
+
+<div class="card-frm">
+    <div class="card-header-frm">
+        <div class="text-header">Registrar</div>
+    </div>
+    <div class="card-body">
+        <form asp-action="Guardar" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" type="text" class="form-control" placeholder="Ingresa producto" aria-describedby="basic-addon1">
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descripcion" class="control-label"></label>
+                <textarea asp-for="Descripcion" class="form-control" aria-label="With textarea"></textarea>
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Codigo" class="control-label"></label>
+                <input asp-for="Codigo" class="form-control" placeholder="Ingresa código">
+                <span asp-validation-for="Codigo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrecioPorUnidad" class="control-label"></label>
+                <input asp-for="PrecioPorUnidad" class="form-control" placeholder="Ingresa precio unitario" locale="es-ES">
+                <span asp-validation-for="PrecioPorUnidad" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrecioPorConjunto" class="control-label"></label>
+                <input asp-for="PrecioPorConjunto" class="form-control" placeholder="Ingresa por conjunto" locale="es-ES">
+                <span asp-validation-for="PrecioPorConjunto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UnidadesPorConjunto" class="control-label"></label>
+                <input asp-for="UnidadesPorConjunto" class="form-control" placeholder="Ingresa la cantidad de unidades">
+                <span asp-validation-for="UnidadesPorConjunto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Imagen" class="control-label"></label>
+                <input asp-for="Imagen" type="file" name="RutaImagen" class="form-control" accept="image/*">
+                <span asp-validation-for="Imagen" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdCategoria" class="control-label"></label>
+                <select asp-for="IdCategoria" asp-items="@(new SelectList(ViewBag.Categorias, "IdCategoria", "Nombre"))" class="form-select">
+                    <option value="">Selecciona una categoría</option>
+                </select>
+                <span asp-validation-for="IdCategoria" class="text-danger"></span>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+                <a asp-action="Index" asp-controller="Producto" class="btn btn-dark">Visualizar</a>
+            </div>
+        </form>
+    </div>
+</div>

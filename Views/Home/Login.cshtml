@@ -1,0 +1,79 @@
+﻿<style>
+    .login-container {
+        width: 100%;
+        max-width: 400px;
+        margin: auto;
+        margin-bottom: 10%;
+        margin-top: 15%;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 16px;
+    }
+
+        .login-container h1 {
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+
+    label {
+        display: block;
+        text-align: left;
+        margin-bottom: 10px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #45a049;
+        }
+</style>
+
+<div class="login-container">
+    <h1>Iniciar Sesión</h1>
+    <form method="post" id="idLogin" action="@Url.Action("VerificarAcceso", "Home")" class="row g-3 needs-validation" novalidate>
+        @Html.AntiForgeryToken()
+        <div>
+            <label for="validationCustom01" class="form-label">Username</label>
+            <input type="text" id="validationCustom02" name="user" placeholder="Ingrese usuario o correo" class="form-control" required autocomplete="on">
+            <div class="invalid-feedback">
+                Por favor ingrese su usuario o correo.
+            </div>
+        </div>
+
+        <div>
+            <label for="validationCustom01" class="form-label">Password</label>
+            <input type="password" id="validationCustom03" name="pass" placeholder="Ingrese su contraseña" class="form-control" required autocomplete="off">
+            <div class="invalid-feedback">
+                Por favor ingrese su contraseña.
+            </div>
+        </div>
+        <button class="btn btn-dark" type="submit">Login</button>
+        @if (TempData["Mensaje"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["Mensaje"]
+            </div>
+        }
+    </form>
+</div>
+
+
+

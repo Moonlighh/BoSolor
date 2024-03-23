@@ -1,0 +1,93 @@
+﻿@model IEnumerable<BODEGA_SOLORZANO.Models.BoSolor.CuentaModel>
+
+@{
+    ViewData["Title"] = "Listar";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+
+@section StylesMain {
+
+}
+
+<h1>LISTADO DE CUENTAS</h1>
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Mensaje"]
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["Error"]
+    </div>
+}
+<hr />
+
+<p>
+    <a asp-action="Guardar" class="btn btn-success btn-sm">Crear Nuevo</a>
+</p>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="bg-dark text-light">
+            <tr>
+                <th>ID</th>
+                <th>DNI</th>
+                <th>CONTACTO</th>
+                <th>CORREO</th>
+                <th>USUARIO</th>
+                <th>NOMBRES</th>
+                <th>ESTADO</th>
+                <th>INICIO</th>
+                <th>FIN</th>
+                <th>ROL</th>
+                <th>OPCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cuenta in Model)
+            {
+                <tr>
+                    <td>@cuenta.IdCuenta</td>
+                    <td>@cuenta.DNI</td>
+                    <td>@cuenta.Telefono</td>
+                    <td>@cuenta.Correo</td>
+                    <td>@cuenta.UserName</td>
+                    <td>@cuenta.Nombres</td>
+                    <td>
+                        @if (cuenta.Activo == true)
+                        {
+                            <span class="badge bg-success">Activo</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Inactivo</span>
+                        }
+                    </td>
+                    <td>@cuenta.FechaInicio</td>
+                    <td>
+                        @if (cuenta.FechaFin == DateTime.MinValue)
+                        {
+                            <span class="badge bg-info">Sigue trabajando</span>
+                        }
+                        else
+                        {
+                            @cuenta.FechaFin
+                        }
+                    </td>
+                    <td>@cuenta.IdRolNavegacion.Nombre</td>
+                    <td>
+                        <a asp-action="Editar" asp-controller="Cuenta" class="btn btn-primary btn-sm m-1" asp-route-id="@cuenta.IdCuenta">Editar</a>
+                        <a asp-action="Eliminar" asp-controller="Cuenta" class="btn btn-danger btn-sm m-1" asp-route-id="@cuenta.IdCuenta"><i class="bi bi-trash-fill"></i> Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section ScriptsMain {
+
+}
+

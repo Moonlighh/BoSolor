@@ -1,0 +1,83 @@
+﻿@model IEnumerable<BODEGA_SOLORZANO.Models.BoSolor.InventarioModel>
+
+@{
+    ViewData["Title"] = "ProductosDisponibles";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+
+@section StylesMain {
+    <link href="~/ShowItem/css/styles.css" rel="stylesheet" />
+}
+
+<!-- Seccion Productos Disponibles-->
+<section class="bg-light">
+    <h2 class="fw-bolder">REGISTRAR PEDIDO</h2>
+    <h3 class="fw-bolder">Productos disponibles</h3>
+    <a asp-action="CarritoPedido" asp-controller="Pedido" type="button" class="btn btn-success btn-sm">Productos agregados <i class="bi bi-eye-fill"></i></a>
+    <hr>
+    <div class="alert alert-info" role="alert">
+        No está permitido registrar pedidos por unidad, solo por paquetes.
+    </div>
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["Error"]
+        </div>
+    }
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["Mensaje"]
+        </div>
+    }
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        @foreach (var item in Model)
+        {
+            <form asp-action="AgregarProductoPedido" asp-controller="Pedido" method="post">
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <div class="m-2">
+                            <!-- Product image-->
+                            <img class="card-img-top" src="@item.IdProductoNavegacion.Imagen" alt="@item.IdProductoNavegacion.Nombre" />
+                        </div>
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product disponibilidad-->
+                                <div>
+                                    <h5>@item.IdProductoNavegacion.Nombre.ToUpper()</h5>
+                                    <b>Paquetes:</b>
+                                    @if (item.CantidadEnCajas > 0)
+                                    {
+                                        <span class="badge bg-success text-light">@item.CantidadEnCajas</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger text-light">Agotado</span>
+                                    }
+                                </div>
+                                <hr>
+                                <h3 style="color: #30CF33; font-family:'Yu Gothic UI';">Paquete: S/. @item.IdProductoNavegacion.PrecioPorConjunto soles</h3>
+                            </div>
+                            <!-- Product quantity-->
+                            <div class="form-floating">
+                                <input type="number" name="cantidadPaquetes" class="form-control" min="0" max="@item.CantidadEnCajas">
+                                <label for="floatingPassword">Cantidad de paquetes</label>
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><button type="submit" class="btn btn-dark"><i class="bi bi-cart-check-fill"></i> Agregar producto al pedido</button></div>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" name="idProducto" value="@item.IdProductoNavegacion.IdProducto" />
+            </form>
+        }
+    </div>
+</section>
+
+@section ScriptsMain {
+
+}
+

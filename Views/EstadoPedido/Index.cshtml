@@ -1,0 +1,49 @@
+﻿@model List<BODEGA_SOLORZANO.Models.BoSolor.EstadoPedidoModel>
+
+@{
+    ViewData["Title"] = "Listar";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+
+@section StylesMain {
+
+}
+
+<h1>Estados de pedido</h1>
+<div class="alert alert-warning" role="alert">
+    <strong>INFORMACIÓN!</strong> Los estados del pedido ya estan establecidos. No puedes registrar más.<br /><br />
+</div>
+<hr />
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="bg-dark text-light">
+            <tr>
+                <th>ID</th>
+                <th>Nombre Estado</th>
+                <th>Descripción</th>
+                <th>Fecha de Creación</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.IdEstadoPedido</td>
+                    <td>@item.NombreEstado</td>
+                    <td>@item.Descripcion</td>
+                    <td>@item.FechaCreacion</td>
+                    <td>
+                        <a asp-action="Editar" asp-controller="EstadoPedido" class="btn btn-primary btn-sm" asp-route-IdEstadoPedido="@item.IdEstadoPedido">Editar</a>
+                        <a asp-action="Desactivar" asp-controller="EstadoPedido" class="btn btn-danger btn-sm" asp-route-IdEstadoPedido="@item.IdEstadoPedido">Desactivar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section ScriptsMain {
+
+}

@@ -1,0 +1,94 @@
+﻿@model List<BODEGA_SOLORZANO.Models.BoSolor.ProveedorProductoModel>
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+
+@section StylesMain {
+    <link href="~/ShowItem/css/styles.css" rel="stylesheet" />
+}
+
+<!-- Related items section-->
+<section class="bg-light">
+    <h2 class="fw-bolder">Productos para la compra</h2>
+    <a href="@Url.Action("CarritoCompra", "Compra")" type="button" class="btn btn-success m-4">Ver productos agregados</a>
+    <hr>
+    <div class="alert alert-primary" role="alert">
+        <p>
+            Primero debes seleccionar un proveedor para la compra.
+        </p>
+        <form asp-action="Productos">
+            <div class="form-group">
+                <!-- Asegúrate de que el valor enviado sea IdProveedor y el texto mostrado sea RazonSocial -->
+                <select name="idProveedor" asp-items="@(new SelectList(ViewBag.Proveedores, "IdProveedor", "RazonSocial"))" class="form-select">
+                    <option value="">Selecciona un proveedor</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Buscar productos</button>
+        </form>
+    </div>
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["Error"]
+        </div>
+    }
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["Mensaje"]
+        </div>
+    }
+    <div class="mb-4" style="color:red">
+        <b>Ten en cuenta que no está permitido agregar productos de diferentes proveedores en una misma compra.</b>
+    </div>
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        @foreach (var item in Model)
+        {
+            <form asp-action="AgregarProductoCompra" asp-controller="Compra" method="post">
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <div class="m-2">
+                            <!-- Product image-->
+                            <img class="card-img-top" src="@item.IdProductoNavegacion.Imagen" alt="@item.IdProductoNavegacion.Nombre" />
+                        </div>
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">@item.IdProductoNavegacion.Nombre.ToUpper()</h5>
+                                <!-- Product price-->
+                                <p>
+                                    Precio de venta por unidad: S/.@item.IdProductoNavegacion.PrecioPorUnidad<br>
+                                    Precio de venta por conjunto: S/.@item.IdProductoNavegacion.PrecioPorConjunto<br>
+                                    Unidades por conjunto: @item.IdProductoNavegacion.UnidadesPorConjunto
+                                </p>
+                                <hr>
+                                <!-- Product details-->
+                                <p>
+                                    <b>Detalles del producto:</b><br>
+                                    Descripcion: @item.IdProductoNavegacion.Descripcion<br>
+                                </p>
+                                <h3>Precio de compra: S/. @item.PrecioCompra</h3>
+                            </div>
+                            <label>Cantidad: </label>
+                            <input type="number" name="cantidad" min="1">
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><button type="submit" class="btn btn-warning"><i class="bi bi-cart-check-fill"></i>Añadir al carrito</button></div>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" name="idProducto" value="@item.IdProductoNavegacion.IdProducto" />
+                <input type="hidden" name="precio" value="@item.PrecioCompra" />
+                <input type="hidden" name="idProveedor" value="@item.IdProveedorNavegacion.IdProveedor" />
+                <input type="hidden" name="nombre" value="@item.IdProductoNavegacion.Nombre" />
+            </form>
+        }
+    </div>
+</section>
+
+@section ScriptsMain {
+    
+}

@@ -1,0 +1,73 @@
+﻿@model IEnumerable<BODEGA_SOLORZANO.Models.BoSolor.ProveedorModel>
+@{
+    ViewData["Title"] = "Listar";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+
+
+@section StylesMain {
+
+}
+
+<h1>LISTADO DE PROVEEDORES</h1>
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["Error"]
+    </div>
+}
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Mensaje"]
+    </div>
+}
+<hr />
+
+<p>
+    <a asp-action="Guardar" class="btn btn-success btn-sm">Crear Nuevo</a>
+</p>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="bg-dark text-light">
+            <tr>
+                <th>ID</th>
+                <th>PROVEEDOR</th>
+                <th>DNI-RUC</th>
+                <th>CONTACTO</th>
+                <th>ESTADO</th>
+                <th>OPCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.IdProveedor</td>
+                    <td>@item.RazonSocial</td>
+                    <td>@item.NumDocumento</td>
+                    <td>@item.Contacto</td>
+                    <td>
+                        @if (item.Activo)
+                        {
+                            <span class="badge bg-success">Activo</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Inactivo</span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Editar" asp-controller="Proveedor" class="btn btn-primary btn-sm m-1" asp-route-id="@item.IdProveedor">Editar</a>
+                        <a asp-action="Eliminar" asp-controller="Proveedor" class="btn btn-danger btn-sm m-1" asp-route-id="@item.IdProveedor"><i class="bi bi-trash-fill"></i> Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section ScriptsMain {
+
+}

@@ -1,0 +1,43 @@
+﻿@model List<BODEGA_SOLORZANO.Models.BoSolor.ProveedorProductoModel>
+@{
+    ViewData["Title"] = "Listar";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+
+<h1>PROVEEDORES Y PRODUCTOS</h1>
+<hr />
+
+<p>
+    <a asp-action="Guardar" class="btn btn-success btn-sm">Crear Nuevo</a>
+</p>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="bg-dark text-light">
+            <tr>
+                <th>Proveedor</th>
+                <th>Producto</th>
+                <th>Precio Compra</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.IdProveedorNavegacion.RazonSocial</td>
+                    <td>@item.IdProductoNavegacion.Nombre</td>
+                    <td>@item.PrecioCompra</td>
+                    <td>
+                        <a asp-action="Editar" asp-controller="ProveedorProducto" class="btn btn-primary btn-sm" asp-route-IdProveedorProducto="@item.IdProveedorProducto">Editar</a>
+                        <a asp-action="Eliminar" asp-controller="ProveedorProducto" class="btn btn-danger btn-sm" asp-route-IdProveedorProducto="@item.IdProveedorProducto"><i class="bi bi-trash-fill"></i> Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section ScriptsMain {
+
+}

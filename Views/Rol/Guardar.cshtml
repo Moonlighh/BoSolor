@@ -1,0 +1,58 @@
+﻿@model BODEGA_SOLORZANO.Models.BoSolor.RolModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+
+@section StylesMain {
+
+}
+
+<h1>REGISTRAR NUEVO ROL</h1>
+<h4>Rol</h4>
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["Error"]
+    </div>
+}
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Mensaje"]
+    </div>
+}
+<div class="alert alert-info" role="alert">
+    <strong>Cada nuevo rol registrado debe ofrecer un conjunto de nuevas funcionalidades dentro del sistema.</strong>
+</div>
+<hr />
+
+<div class="card-frm">
+    <div class="card-header-frm">
+        <div class="text-header">Registrar</div>
+    </div>
+    <div class="card-body">
+        <form asp-action="Guardar">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" maxlength="40"/>
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descripcion" class="control-label"></label>
+                <textarea asp-for="Descripcion" class="form-control" maxlength="250"> </textarea>
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+                <a asp-action="Index" asp-controller="Rol" class="btn btn-dark">Visualizar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section ScriptsMain {
+
+}

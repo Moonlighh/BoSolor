@@ -1,0 +1,31 @@
+﻿[*.cs]
+
+# CS8602: Desreferencia de una referencia posiblemente NULL.
+dotnet_diagnostic.CS8602.severity = none
+
+# CS8981: El nombre de tipo solo contiene caracteres ASCII en minúsculas. Estos nombres pueden reservarse para el idioma.
+dotnet_diagnostic.CS8981.severity = none
+
+# CS8603: Posible tipo de valor devuelto de referencia nulo
+dotnet_diagnostic.CS8603.severity = none
+
+# CS8604: Posible argumento de referencia nulo
+dotnet_diagnostic.CS8604.severity = none
+
+# CS8619: La nulabilidad de los tipos de referencia del valor no coincide con el tipo de destino
+dotnet_diagnostic.CS8619.severity = none
+
+# CS1998: El método asincrónico carece de operadores "await" y se ejecutará de forma sincrónica
+dotnet_diagnostic.CS1998.severity = none
+
+# CS0114: El miembro oculta el miembro heredado. Falta una contraseña de invalidación
+dotnet_diagnostic.CS0114.severity = none
+
+# CS8600: Se va a convertir un literal nulo o un posible valor nulo en un tipo que no acepta valores NULL
+dotnet_diagnostic.CS8600.severity = none
+
+# IDE1006: Estilos de nombres
+dotnet_diagnostic.IDE1006.severity = none
+
+# CS9057: El ensamblado del analizador hace referencia a una versión más reciente del compilador que la versión que se está ejecutando actualmente.
+dotnet_diagnostic.CS9057.severity = none

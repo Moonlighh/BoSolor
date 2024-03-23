@@ -1,0 +1,42 @@
+﻿@model BODEGA_SOLORZANO.Models.BoSolor.ClienteModel
+
+@{
+    ViewData["Title"] = "Guardar";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+
+<h1>REGISTRAR NUEVO CLIENTE</h1>
+<h4>Cliente</h4>
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Mensaje"]
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["Error"]
+    </div>
+}
+<hr />
+
+<div class="card-frm">
+    <div class="card-header-frm">
+        <div class="text-header">Registrar</div>
+    </div>
+    <div class="card-body">
+        <form asp-action="Guardar">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NumDocumento" class="control-label"></label>
+                <input asp-for="NumDocumento" class="form-control" />
+                <span asp-validation-for="NumDocumento" class="text-danger"></span>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+                <a asp-action="Index" asp-controller="Cliente" class="btn btn-dark">Visualizar</a>
+            </div>
+        </form>
+    </div>
+</div>

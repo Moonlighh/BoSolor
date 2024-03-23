@@ -1,0 +1,52 @@
+﻿@model IEnumerable<BODEGA_SOLORZANO.Models.BoSolor.TransaccionModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmi.cshtml";
+}
+
+<h1>VENTAS REALIZADAS</h1>
+<div class="alert alert-info" role="alert">
+    <strong>INFORMACIÓN!</strong> Se muestran tus ventas realizadas durante el día.<br /><br />
+    <strong>Cantidad de ventas realizadas: </strong>@Model.Count()<br />
+    <strong>Hoy día realizaste un total de: S/.</strong> @Model.Sum(x => x.MontoTotal) soles
+</div>
+<hr />
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="bg-dark text-light">
+            <tr>
+                <th>CODIGO</th>
+                <th>METODO</th>
+                <th>S/. MONTO BRUTO</th>
+                <th>S/. DESCUENTO</th>
+                <th>S/. MONTO TOTAL</th>
+                <th>FECHA</th>
+                <th>ESTADO</th>
+                <th>USUARIO</th>
+                <th>CLIENTE</th>
+                <th>VER DETALLE</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.CodTransaccion</td>
+                    <td>@item.IdMetodoNavegacion.Nombre</td>
+                    <td>S/. @item.MontoBruto</td>
+                    <td>@item.Descuento</td>
+                    <td>S/. @item.MontoTotal</td>
+                    <td>@item.FechaTransaccion</td>
+                    <td>@item.EstadoTransaccion</td>
+                    <td>@item.IdCuentaNavegacion.Nombres</td>
+                    <td>@item.IdClienteNavegacion.Cliente</td>
+                    <td>
+                        <a asp-action="Detalle" asp-route-id="@item.IdTransaccion" class="btn btn-dark"><i class="bi bi-chat-right-text-fill"></i> Detalle</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
